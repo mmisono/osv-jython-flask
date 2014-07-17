@@ -1,0 +1,31 @@
+diff -ur a/werkzeug/_internal.py b/werkzeug/_internal.py
+--- a/werkzeug/_internal.py	2014-07-18 03:33:07.000000000 +0900
++++ b/werkzeug/_internal.py	2014-07-18 03:33:16.000000000 +0900
+@@ -18,6 +18,7 @@
+ from werkzeug._compat import iter_bytes, text_type, BytesIO, int_to_byte, \
+      range_type, to_native
+ 
++import java.net.IDN
+ 
+ _logger = None
+ _empty_stream = BytesIO()
+@@ -301,7 +302,8 @@
+     # Otherwise encode each part separately
+     parts = domain.split('.')
+     for idx, part in enumerate(parts):
+-        parts[idx] = part.encode('idna')
++        # parts[idx] = part.encode('idna')
++        parts[idx] = java.net.IDN.toAscii(part)
+     return b'.'.join(parts)
+ 
+ 
+@@ -321,7 +323,8 @@
+     parts = domain.split(b'.')
+     for idx, part in enumerate(parts):
+         try:
+-            parts[idx] = part.decode('idna')
++            #parts[idx] = part.decode('idna')
++            parts[idx] = java.net.IDN.toASCII(part)
+         except UnicodeError:
+             parts[idx] = part.decode('ascii', 'ignore')
+ 

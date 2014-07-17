@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></link>
+	<title>blog</title>
+</head>
+<body>
+
+<div id="container">
+<div id="header">
+<h1>Blog</h1>
+</div> <!-- header -->
+
+<div id="login_status">
+{% if not session.logged_in %}
+<a href="{{ url_for('login') }}">log in</a>
+{% else %}
+<a href="{{ url_for('logout') }}">log out</a>
+{% endif %}
+</div> <!-- login_status -->
+
+{% for message in get_flashed_messages() %}
+<div class=flash> {{ message }} </div>
+{% endfor %}
+
+{% block body %} {% endblock %}
+
+<div id="footer">
+Powerd By Flask
+</div> <!-- footer -->
+
+</div> <!-- container -->
+</body>
+</html>

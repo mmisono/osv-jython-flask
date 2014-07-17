@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ ! -e ROOTFS/app ]; then
+	mkdir -p ROOTFS
+	cp -R app ROOTFS
+fi
+
+exit 0

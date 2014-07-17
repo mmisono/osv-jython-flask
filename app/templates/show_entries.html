@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if session.logged_in %}
+<div id="input">
+	<h2> New Entry </h2>
+<form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+	<dl>
+		<dt>Title:
+		<dd><input type="text" size=30 name="title">
+		<dt>Text:
+		<dd><textarea name=text rows=4 cols=40></textarea>
+		<dd><input type="submit" value="Share">
+	</dl>
+</form>
+</div> <!-- input -->
+{% endif %}
+<ul class=entries>
+	{% for entry in entries %}
+	<div class="entry">
+	<li><h2>{{ entry.title }}</h2>
+	{% for line in entry.text.splitlines() %}
+		{{ line|safe }} <br />
+	{% endfor %}
+	{% if session.logged_in %}
+	<form action="{{ url_for('del_entry') }}" method=post class=del-entry>
+		<input type="hidden" name="id" value="{{ entry.id }}" />
+		<input type="submit" value="Delete">
+	</form>
+	{% endif %}
+	</div> <!-- entry -->
+	{% else %}
+	<li><em>No entries.... </em>
+	{% endfor %}
+</ul>
+{% endblock %}

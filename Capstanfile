@@ -1,0 +1,8 @@
+base: cloudius/osv-openjdk
+
+cmdline: >
+  /java.so -jar /jython.jar /app/app.py
+
+build:
+  make
+

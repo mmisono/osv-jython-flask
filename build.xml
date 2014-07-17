@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<project name="jython-flask">
+<jar destfile="exec.jar" filesetmanifest="merge">
+    <manifest>
+        <attribute name="Main-Class" value="org.python.util.jython"/>
+    </manifest>
+    <zipgroupfileset dir="./" includes="jython.jar" />
+    <zipgroupfileset dir="./" includes="sqlite-jdbc.jar" />
+</jar>
+</project>

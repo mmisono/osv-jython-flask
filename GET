@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+if [ ! -e ROOTFS ];then
+	mkdir ROOTFS
+else
+	exit 0
+fi
+
+if [ ! -e tmp ];then
+	mkdir tmp
+fi
+
+cd tmp
+
+if [ ! -e Lib ];then
+	mkdir Lib
+fi
+
+if [ ! -e flask.zip ];then
+	wget https://github.com/mitsuhiko/flask/archive/0.10.1.zip -O flask.zip
+	unzip -q flask.zip
+	mv flask-0.10.1/flask Lib/
+fi
+
+if [ ! -e werkzeug.zip ];then
+	wget https://github.com/mitsuhiko/werkzeug/archive/0.9.6.zip -O werkzeug.zip
+	unzip -q werkzeug.zip
+	cp ../werkzeug_idna.patch .
+	patch -p1 -d werkzeug-0.9.6/ < werkzeug_idna.patch
+	mv werkzeug-0.9.6/werkzeug Lib/
+fi
+
+if [ ! -e jinja2.zip ];then
+	wget https://github.com/mitsuhiko/jinja2/archive/2.7.3.zip -O jinja2.zip
+	unzip -q jinja2.zip
+	mv jinja2-2.7.3/jinja2 Lib/
+fi
+
+if [ ! -e markupsafe.zip ];then
+	wget https://github.com/mitsuhiko/markupsafe/archive/0.23.zip -O markupsafe.zip
+	unzip -q markupsafe.zip
+	mv markupsafe-0.23/markupsafe Lib/
+fi
+
+if [ ! -e click.zip ];then
+	wget https://github.com/mitsuhiko/click/archive/2.4.zip -O click.zip
+	unzip -q click.zip
+	mv click-2.4/click Lib/
+fi
+
+if [ ! -e itsdangerous.zip ];then
+	wget https://github.com/mitsuhiko/itsdangerous/archive/0.24.zip -O itsdangerous.zip
+	unzip -q itsdangerous.zip
+	mv itsdangerous-0.24/itsdangerous.py Lib/
+fi
+
+if [ ! -e ROOTFS/jython.jar ];then
+	wget http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7-b2/jython-standalone-2.7-b2.jar -O jython.jar
+fi
+
+if [ ! -e ROOTFS/sqlite-jdbc.jar ];then
+	wget https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.7.15-M1.jar -O sqlite-jdbc.jar
+fi
+
+mv Lib/ ../ROOTFS/
+cp ../build.xml .
+ant
+mv exec.jar ../ROOTFS/jython.jar
+
+exit 0
